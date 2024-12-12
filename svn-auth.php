@@ -13,7 +13,12 @@ $user = trim(fgets(STDIN));
 $groups = trim(fgets(STDIN));
 $group_array = explode(' ', $groups);
 
-if (strcmp($group_array[0], 'svn-authz') !== 0) {
+$anonymous_override = false;
+if (strcmp($group_array[0], $anonymous) === 0) {
+	fwrite(STDERR, "[authnz_external:svn-auth:info] checking for anonymous access\n");
+	$anonymous_override = true;
+}	
+elseif (strcmp($group_array[0], 'svn-authz') !== 0) {
 	fwrite(STDERR, "[authnz_external:svn-auth:info] $groups is not supported\n");
 	exit(3);
 }
@@ -40,8 +45,13 @@ if ($retval != 0) {
 }
 
 foreach ($output as $authz) {
-	if (strcmp($user, $authz) === 0) {
-	        exit(0);
+	// Grant the user their permissions BEFORE checking anonymous
+	// (though this is actually ordered by the property).
+	// When anonymous override, we need to skip specific user checks
+	if ($anonymous_override === false) {
+		if (strcmp($user, $authz) === 0) {
+	        	exit(0);
+		}
 	}
 	if (strcmp($anonymous, $authz) === 0){
 		fwrite(STDERR, "[authnz_external:svn-auth:info] $user is granted anonymous access!\n");
