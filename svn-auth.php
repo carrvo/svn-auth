@@ -1,9 +1,6 @@
 #!/usr/bin/php
 <?php
 // setup
-session_start();
-$log_path = '/opt/experimentation/svn-auth/print.log';
-file_put_contents($log_path, print_r($_SESSION, true)."\n", FILE_APPEND);
 $sub_command = 'svn propget';
 $read_property = 'authz:read';
 $anonymous = 'anonymous';
@@ -17,7 +14,7 @@ $group_array = explode(' ', $groups);
 
 if (strcmp($group_array[0], 'svn-authz') !== 0) {
 	fwrite(STDERR, "[authnz_external:svn-auth:info] $groups is not supported\n");
-	exit(-3);
+	exit(3);
 }
 $svn_property = $group_array[1];
 
@@ -34,7 +31,7 @@ $cmd_ran = exec($cmd, $output, $retval);
 // Results
 if ($cmd_ran === false) {
     fwrite(STDERR, "[authnz_external:svn-auth:info] SVN failed to run\n");
-    exit(-1);
+    exit(1);
 }
 if ($retval != 0) {
     fwrite(STDERR, "[authnz_external:svn-auth:info] SVN returned with status $retval\n");
@@ -51,6 +48,6 @@ foreach ($output as $authz) {
 	}
 }
 fwrite(STDERR, "[authnz_external:svn-auth:info] $user is not authorized!\n");
-exit(-2);
+exit(2);
 ?>
 
