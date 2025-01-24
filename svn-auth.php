@@ -29,7 +29,7 @@ $svn_path = preg_replace('/'.preg_quote($SVNLocationPath, '/').'/', $SVNParentPa
 $svn_path = preg_replace('/!svn\/ver\/\d+\//', '', $svn_path);
 
 // Permissions
-$cmd = "$sub_command $svn_property file://$svn_path";
+$cmd = "$sub_command $svn_property 'file://$svn_path'";
 $output=null;
 $retval=null;
 $cmd_ran = exec($cmd, $output, $retval);
