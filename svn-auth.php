@@ -3,6 +3,7 @@
 // setup
 $sub_command = 'svn propget';
 $read_property = 'authz:read';
+$write_property = 'authz:write';
 $anonymous = 'anonymous';
 
 $context = json_decode(getenv('CONTEXT'), true);
@@ -27,6 +28,14 @@ $svn_property = $group_array[1];
 $svn_path = preg_replace('/'.preg_quote($SVNLocationPath, '/').'/', $SVNParentPath, $location_path);
 // for folder reads it queries each item with !svn/ver/{revision}/ inserted into the path
 $svn_path = preg_replace('/!svn\/ver\/\d+\//', '', $svn_path);
+$svn_path = preg_replace('/!svn\/rvr\/\d+\//', '', $svn_path);
+
+// special WebDAV URIs
+// https://svn.apache.org/repos/asf/subversion/trunk/notes/http-and-webdav/http-protocol-v2.txt
+if (str_ends_with($location_path, "/!svn/me")) { # && $svn_property === $write_property) {
+	fwrite(STDERR, "[authnz_external:svn-auth:info] special WebDAV override for $user to create a transaction\n");
+	exit(0);
+}
 
 // Permissions
 $cmd = "$sub_command $svn_property 'file://$svn_path'";
