@@ -28,6 +28,23 @@ $svn_path = preg_replace('/'.preg_quote($SVNLocationPath, '/').'/', $SVNParentPa
 // for folder reads it queries each item with !svn/ver/{revision}/ inserted into the path
 $svn_path = preg_replace('/!svn\/ver\/\d+\//', '', $svn_path);
 
+// Parent override
+if (count($group_array) > 2 && strcmp($group_array[2], 'ParentIfNotExist') === 0) {
+	fwrite(STDERR, "[authnz_external:svn-auth:info] finding parent\n");
+	$cmd = "svn list 'file://$svn_path'";
+	$output=null;
+	$retval=null;
+	$cmd_ran = exec($cmd, $output, $retval);
+	if ($cmd_ran === false || $retval != 0) {
+		$parent_pos = strrpos($svn_path, '/', 1); // exclude final slash (/) if child is folder
+		if ($parent_pos !== false) {
+			fwrite(STDERR, "[authnz_external:svn-auth:info] does not exist, overriding with parent for permissions\n");
+			$svn_path = substr($svn_path, 0, $parent_pos);
+		}
+	}
+	fwrite(STDERR, "[authnz_external:svn-auth:info] done with parent\n");
+}
+
 // Permissions
 $cmd = "$sub_command $svn_property 'file://$svn_path'";
 $output=null;
