@@ -31,13 +31,13 @@ $svn_path = preg_replace('/!svn\/rvr\/\d+\//', '', $svn_path);
 // special WebDAV URIs
 // https://svn.apache.org/repos/asf/subversion/trunk/notes/http-and-webdav/http-protocol-v2.txt
 if (str_ends_with($location_path, "/!svn/me")) {
-	fwrite(STDERR, "[authnz_external:svn-auth:info] special WebDAV override for $user to create a transaction\n");
+	error_log("[authnz_external:svn-auth:info] special WebDAV override for $user to create a transaction");
 	exit(0);
 }
 
 // Parent override
 if (count($group_array) > 2 && strcmp($group_array[2], 'ParentIfNotExist') === 0) {
-	fwrite(STDERR, "[authnz_external:svn-auth:info] finding parent\n");
+	error_log("[authnz_external:svn-auth:info] finding parent");
 	$cmd = "svn list 'file://$svn_path'";
 	$output=null;
 	$retval=null;
@@ -49,7 +49,7 @@ if (count($group_array) > 2 && strcmp($group_array[2], 'ParentIfNotExist') === 0
 			$svn_path = substr($svn_path, 0, $parent_pos);
 		}
 	}
-	fwrite(STDERR, "[authnz_external:svn-auth:info] done with parent\n");
+	error_log("[authnz_external:svn-auth:info] done with parent");
 }
 
 // Permissions
