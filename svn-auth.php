@@ -14,11 +14,11 @@ $group_array = explode(' ', $groups);
 
 $anonymous_override = false;
 if (strcmp($group_array[0], $anonymous) === 0) {
-	error_log("[authnz_external:svn-auth:info] checking for anonymous access");
+	fwrite(STDERR, "[authnz_external:svn-auth:info] checking for anonymous access\n");
 	$anonymous_override = true;
 }	
 elseif (strcmp($group_array[0], 'svn-authz') !== 0) {
-	error_log("[authnz_external:svn-auth:info] $groups is not supported");
+	fwrite(STDERR, "[authnz_external:svn-auth:info] $groups is not supported\n");
 	exit(3);
 }
 $svn_property = $group_array[1];
@@ -64,11 +64,11 @@ $cmd_ran = exec($cmd, $output, $retval);
 
 // Results
 if ($cmd_ran === false) {
-    error_log("[authnz_external:svn-auth:info] SVN failed to run");
+    fwrite(STDERR, "[authnz_external:svn-auth:info] SVN failed to run\n");
     exit(1);
 }
 if ($retval != 0) {
-    error_log("[authnz_external:svn-auth:info] SVN returned with status $retval");
+    fwrite(STDERR, "[authnz_external:svn-auth:info] SVN returned with status $retval\n");
     exit($retval);
 }
 
@@ -82,11 +82,11 @@ foreach ($output as $authz) {
 		}
 	}
 	if (strcmp($anonymous, $authz) === 0){
-		error_log("[authnz_external:svn-auth:info] $user is granted anonymous access!");
+		fwrite(STDERR, "[authnz_external:svn-auth:info] $user is granted anonymous access!\n");
 		exit(0);
 	}
 }
-error_log("[authnz_external:svn-auth:info] $user is not authorized!");
+fwrite(STDERR, "[authnz_external:svn-auth:info] $user is not authorized!\n");
 exit(2);
 ?>
 
