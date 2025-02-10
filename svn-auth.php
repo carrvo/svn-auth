@@ -37,19 +37,23 @@ if (str_ends_with($location_path, "/!svn/me")) {
 
 // Parent override
 if (count($group_array) > 2 && strcmp($group_array[2], 'ParentIfNotExist') === 0) {
-	error_log("[authnz_external:svn-auth:info] finding parent");
+	error_log("[authnz_external:svn-auth:info] finding parent for $svn_path");
 	$cmd = "svn list 'file://$svn_path'";
 	$output=null;
 	$retval=null;
 	$cmd_ran = exec($cmd, $output, $retval);
-	if ($cmd_ran === false || $retval != 0) {
+	while ($cmd_ran === false || $retval != 0) {
 		$parent_pos = strrpos($svn_path, '/', 1); // exclude final slash (/) if child is folder
 		if ($parent_pos !== false) {
-			fwrite(STDERR, "[authnz_external:svn-auth:info] does not exist, overriding with parent for permissions\n");
 			$svn_path = substr($svn_path, 0, $parent_pos);
+			error_log("[authnz_external:svn-auth:info] did not exist, overridden with parent $svn_path for permissions");
+		} else {
+			break;
 		}
+		$cmd = "svn list 'file://$svn_path'";
+		$cmd_ran = exec($cmd, $output, $retval);
 	}
-	error_log("[authnz_external:svn-auth:info] done with parent");
+	error_log("[authnz_external:svn-auth:info] done with parent, now using $svn_path");
 }
 
 // Permissions
