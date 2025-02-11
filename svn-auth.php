@@ -27,6 +27,8 @@ $svn_path = preg_replace('/'.preg_quote($SVNLocationPath, '/').'/', $SVNParentPa
 // for folder reads it queries each item with !svn/ver/{revision}/ inserted into the path
 $svn_path = preg_replace('/!svn\/ver\/\d+\//', '', $svn_path);
 $svn_path = preg_replace('/!svn\/rvr\/\d+\//', '', $svn_path);
+$svn_path = preg_replace('/!svn\/txr\/\d+-[\d\w]+\//', '', $svn_path);
+$svn_path = preg_replace('/!svn\/txn\/\d+-[\d\w]+\//', '', $svn_path); // for some reason this does not do it during MERGE but the line above (which is the same except a single letter) does during other methods
 
 // special WebDAV URIs
 // https://svn.apache.org/repos/asf/subversion/trunk/notes/http-and-webdav/http-protocol-v2.txt

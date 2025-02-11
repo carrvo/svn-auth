@@ -46,11 +46,14 @@ and should be fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off
 	    GroupExternal svn-auth
 	    <RequireAll>
 		    Require valid-user
-		    <Limit GET>
+		    <Limit GET HEAD OPTIONS REPORT>
 			    Require external-group svn-authz authz:read
 		    </Limit>
-		    <Limit POST>
+		    <Limit POST PUT PROPPATCH>
 			    Require external-group svn-authz authz:write
+		    </Limit>
+		    <Limit MERGE DELETE>
+		        Require valid-user
 		    </Limit>
 	    </RequireAll>
     </Location>
