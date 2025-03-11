@@ -47,6 +47,7 @@ if (count($group_array) > 2) {
         $options[$opt] = true;
     }
 }
+$parented = false;
 $orphaned = false;
 
 // Parent override
@@ -60,6 +61,7 @@ if ($options['ParentIfNotExist']) {
 		$parent_pos = strrpos($svn_path, '/', 1); // exclude final slash (/) if child is folder
 		if ($parent_pos !== false) {
 			$svn_path = substr($svn_path, 0, $parent_pos);
+			$parented = true;
 			fwrite(STDERR, "[authnz_external:svn-auth:info] did not exist, overridden with parent $svn_path for permissions\n");
 		} else {
 			break;
@@ -71,7 +73,7 @@ if ($options['ParentIfNotExist']) {
 }
 
 // Orphaned Permissions
-elseif ($options['SuperWrite']) { // but not in conjunction with Parent override!
+if ($options['SuperWrite'] && $parented === false) { // but not in conjunction with Parent override!
     fwrite(STDERR, "[authnz_external:svn-auth:info] checking if permissions have been orphaned for $svn_path\n");
     $cmd = "svn proplist 'file://$svn_path'";
     $output=null;
@@ -81,11 +83,13 @@ elseif ($options['SuperWrite']) { // but not in conjunction with Parent override
         $orphaned = true;
     }
     else {
-        $orphaned = in_array($svn_property, $output);
+        fwrite(STDERR, "[authnz_external:svn-auth:info] checking $svn_property against ".print_r($output, true)." for $svn_path\n");
+        $orphaned = in_array("  $svn_property", $output) == false;
         if ($orphaned) {
 		    $parent_pos = strrpos($svn_path, '/', 1); // exclude final slash (/) if child is folder
 		    if ($parent_pos !== false) {
 			    $svn_path = substr($svn_path, 0, $parent_pos);
+			    $parented = true;
 			    fwrite(STDERR, "[authnz_external:svn-auth:info] permission $svn_property did not exist, overridden with parent $svn_path for permissions\n");
 		    }
         }
