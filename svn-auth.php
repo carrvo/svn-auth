@@ -47,6 +47,7 @@ if (count($group_array) > 2) {
         $options[$opt] = true;
     }
 }
+$orphaned = false;
 
 // Parent override
 if ($options['ParentIfNotExist']) {
