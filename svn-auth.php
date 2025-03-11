@@ -112,12 +112,13 @@ if ($retval != 0) {
     exit($retval);
 }
 
-if ($options['SuperWrite'] && ($orphaned === false) && (empty($output) || count($output) === 0)) {
+if ($options['SuperWrite'] && ($orphaned === false) && (count($output) === 1 && $output[0] === '')) {
     // Orphaned Permissions
+    fwrite(STDERR, "[authnz_external:svn-auth:info] permission $svn_property is empty\n");
     $parent_pos = strrpos($svn_path, '/', 1); // exclude final slash (/) if child is folder
     if ($parent_pos !== false) {
 	    $svn_path = substr($svn_path, 0, $parent_pos);
-	    fwrite(STDERR, "[authnz_external:svn-auth:info] permission $svn_property did not exist, overridden with parent $svn_path for permissions\n");
+	    fwrite(STDERR, "[authnz_external:svn-auth:info] permission $svn_property is empty, overridden with parent $svn_path for permissions\n");
     }
 
     $cmd = "$sub_command $svn_property 'file://$svn_path'";
