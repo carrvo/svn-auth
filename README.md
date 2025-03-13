@@ -61,26 +61,27 @@ and should be fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off
 
 ## Usage
 
-Must include:
+### Must include
 - `Include </path/to/svn-auth.define.conf>` and `GroupExternal svn-auth` for the Authz to be called
 - `AuthType` and its configuration (for your choice of Authn)
 - `AuthExternalContext` with a `JSON` string for proper substitutions (and, yes, these values are duplicated in your config)
     - `SVNParentPath` - filesystem path to parent directory of repository - this matches the `SVNParentPath` directive
     - `SVNLocationPath` - webspace path that is parent to the repository - this matches the `Location` directive
 
-For Authz include:
+### For Authz include
 - `Require external-group svn-authz <svn property>` - the SVN property that you set will act as an allowlist of user IDs for the file or directory it is set on - I recommend the values `authz:read` and `authz:write`
 - `Require external-group svn-authz <svn property> ParentIfNotExist` - *optionally* use the parent's (or first grandparent's if intermediaries do not exist) permissions when the file does not exist (important for creating new files)
 - `Require external-group svn-authz <svn property> SuperWrite` - *optionally* use the immediate parent's permissions if the `<svn property>` is either not set or empty
 
 Note: you can use `Require external-group svn-authz <svn property> ParentIfNotExist SuperWrite` to enable both features for the webspace path; **however** only one will take effect for a given request, depending on the circumstances (whether the item exists versus whether the property exists).
 
-For anonymous include:
+### For anonymous include
 - `Require external-group anonymous <svn property>` - the SVN property that you set ***MUST*** have `anonymous` as one of its lines
 
-Optionally, for better user experience:
+### Optionally, for better user experience
 - `AuthzSendForbiddenOnFailure on` - Authz failures will return `403 Forbidden` over `401 Unauthorized` (the latter may re-prompt your Authn)
 
+### Optionally, for redirection
 For ease of redirection from public to secure, `Forbidden*.php` files have been included. They accept a `?new=<>` query parameter to replace the starting `public` path with your secure path. It assumes that you have anonymous under `/public/<>` but this can be changed by modifying the file.
 
 ## License
