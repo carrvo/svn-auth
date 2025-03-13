@@ -71,6 +71,9 @@ Must include:
 For Authz include:
 - `Require external-group svn-authz <svn property>` - the SVN property that you set will act as an allowlist of user IDs for the file or directory it is set on - I recommend the values `authz:read` and `authz:write`
 - `Require external-group svn-authz <svn property> ParentIfNotExist` - *optionally* use the parent's (or first grandparent's if intermediaries do not exist) permissions when the file does not exist (important for creating new files)
+- `Require external-group svn-authz <svn property> SuperWrite` - *optionally* use the immediate parent's permissions if the `<svn property>` is either not set or empty
+
+Note: you can use `Require external-group svn-authz <svn property> ParentIfNotExist SuperWrite` to enable both features for the webspace path; **however** only one will take effect for a given request, depending on the circumstances (whether the item exists versus whether the property exists).
 
 For anonymous include:
 - `Require external-group anonymous <svn property>` - the SVN property that you set ***MUST*** have `anonymous` as one of its lines
