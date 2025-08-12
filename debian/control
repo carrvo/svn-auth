@@ -19,5 +19,8 @@ Suggests: mindie-client
 Homepage: https://github.com/carrvo/svn-auth
 Description: This is a module to use SVN properties for Authorization (Authz) purposes,
  instead of the default access file.
- By choosing to do it this way, you can have versioned fine-grained access control
- managed by the creator of the file, just like you would with a real filesystem!
+ .
+ By choosing to do it this way, you can have
+ versioned fine-grained access control
+ managed by the creator of the file,
+ just like you would with a real filesystem!
