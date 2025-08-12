@@ -16,7 +16,8 @@ without needing them to register accounts on your system (or account sharing eit
 
 This module supports a special `anonymous` user that can be used to grant anyone
 access to a given file.
-The [example](svn-auth.MIndie-Client.example.conf) (WARNING this example may be outdated,
+The [example](svn-auth.MIndie-Client.example.conf) (installed to
+`/usr/share/doc/package/examples/`; WARNING this example may be outdated,
 please see the module for the latest MIndie-Client configuration) provided
 shows how you can have a secondary `public` path to the same repository
 and redirect them to the secured path for any file or directory
@@ -27,7 +28,10 @@ and should be fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off
 
 ## Setup
 
-1. Install:
+1. Clone
+1. Run `debian-package-dependencies` to install dependent *build* Debian packages
+1. Run `make debian-package` to build package locally
+1. Run `dpkg -i package/mindie-idp_X.X.X_all.deb` to install package locally
 - [Apache HTTPd](https://httpd.apache.org/)
 - [PHP](https://www.php.net/)
 - [mod_authnz_external](https://github.com/phokz/mod-auth-external)

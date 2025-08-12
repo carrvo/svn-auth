@@ -1,0 +1,3 @@
+ForbiddenToRedirect.php /usr/src/svn-auth/
+ForbiddenWithRedirect.php /usr/src/svn-auth/
+svn-auth.php /usr/src/svn-auth/

@@ -1,0 +1,11 @@
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/svn-auth.debhelper.log
+debian/svn-auth.postinst.debhelper
+debian/svn-auth.postrm.debhelper
+debian/svn-auth.prerm.debhelper
+debian/svn-auth.substvars
+debian/svn-auth/
+package/
+
