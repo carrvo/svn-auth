@@ -1,0 +1,23 @@
+Source: svn-auth
+Maintainer: carrvo  <carrvo@gmail.com>
+Uploaders: carrvo <carrvo@gmail.com>
+Section: httpd
+Priority: optional
+Standards-Version: 4.6.2
+Build-Depends: debhelper-compat (= 13),
+    apache2-api-20120211,
+    apache2-dev,
+    dh-apache2
+Homepage: https://github.com/carrvo/svn-auth
+Vcs-Browser: https://github.com/carrvo/svn-auth
+Vcs-Git: https://github.com/carrvo/svn-auth
+
+Package: svn-auth
+Architecture: all
+Depends: ${misc:Depends}, php, libapache2-mod-authnz-external
+Recommends: mindie-client
+Homepage: https://github.com/carrvo/svn-auth
+Description: This is a module to use SVN properties for Authorization (Authz) purposes,
+ instead of the default access file.
+ By choosing to do it this way, you can have versioned fine-grained access control
+ managed by the creator of the file, just like you would with a real filesystem!

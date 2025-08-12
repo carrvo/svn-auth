@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+cd /usr/src/svn-auth/
+chgrp www-data svn-auth.php
+chmod g+x svn-auth.php
+
+exit 0
