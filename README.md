@@ -14,8 +14,12 @@ without needing them to register accounts on your system (or account sharing eit
 
 ## Anonymous
 
-This module supports a special `anonymous` user that can be used to grant anyone
+This module supports a special `*` (to represent `anonymous`) user that can be used to grant anyone
 access to a given file.
+This user can be added to the SVN property that you configured, giving universal access controlled by
+whomever has access to modify the property. Alternatively you can specify `*` as the `external-group`
+to enforce that only files set with anonymous can be accessed.
+
 The [example](svn-auth.MIndie-Client.example.conf) (installed to
 `/usr/share/doc/package/examples/`; WARNING this example may be outdated,
 please see the module for the latest MIndie-Client configuration) provided
@@ -24,7 +28,7 @@ and redirect them to the secured path for any file or directory
 that is not configured to be `anonymous`.
 
 This is due to the limitation of [mod_authnz_external](https://github.com/phokz/mod-auth-external) v3.3.2
-and should be fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off` directive (untested).
+and has been fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off` directive (tested).
 
 ## Setup
 
@@ -80,7 +84,7 @@ and should be fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off
 Note: you can use `Require external-group svn-authz <svn property> ParentIfNotExist SuperWrite` to enable both features for the webspace path; **however** only one will take effect for a given request, depending on the circumstances (whether the item exists versus whether the property exists).
 
 ### For anonymous include
-- `Require external-group anonymous <svn property>` - the SVN property that you set ***MUST*** have `anonymous` as one of its lines
+- `Require external-group * <svn property>` - the SVN property that you set ***MUST*** have `*` as one of its lines -- this enforces that only files set for anonymous access are authorized (you ***MUST*** have another, better protected, URL for accessing any non-anonymous files)
 
 ### Optionally, for better user experience
 - `AuthzSendForbiddenOnFailure on` - Authz failures will return `403 Forbidden` over `401 Unauthorized` (the latter may re-prompt your Authn)

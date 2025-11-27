@@ -2,7 +2,7 @@
 <?php
 // setup
 $sub_command = 'svn propget';
-$anonymous = 'anonymous';
+$anonymous = '*';
 
 $context = json_decode(getenv('CONTEXT'), true);
 $SVNParentPath = $context['SVNParentPath'];
