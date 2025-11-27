@@ -24,7 +24,7 @@ and redirect them to the secured path for any file or directory
 that is not configured to be `anonymous`.
 
 This is due to the limitation of [mod_authnz_external](https://github.com/phokz/mod-auth-external) v3.3.2
-and should be fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off` directive (untested).
+and has been fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off` directive (tested).
 
 ## Setup
 
