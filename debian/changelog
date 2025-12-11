@@ -1,3 +1,9 @@
+svn-auth (2.0.1) unstable; urgency=medium
+
+  * Fix #7
+
+ -- carrvo <carrvo@gmail.com>  Wed, 10 Dec 2025 21:47:59 -0700
+
 svn-auth (2.0.0) unstable; urgency=medium
 
   * BREAKING CHANGE: anonymous is now `*` #20
