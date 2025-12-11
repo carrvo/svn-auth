@@ -41,7 +41,8 @@ and has been fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off`
 - [mod_authnz_external](https://github.com/phokz/mod-auth-external)
 1. Configure! (Replace `<>` with real values.)
     ```
-    Include </path/to/svn-auth.define.conf>
+    # Note: if you are using Virtual Hosts then this line MUST be inside
+    Include /etc/apache2/mods-available/svn-auth.define.conf
 
     <Location </svn>>
 	    DAV svn
@@ -70,7 +71,7 @@ and has been fixed in v3.3.3 with the inclusion of `GroupExternalAuthNCheck Off`
 ## Usage
 
 ### Must include
-- `Include </path/to/svn-auth.define.conf>` and `GroupExternal svn-auth` for the Authz to be called
+- `Include /etc/apache2/mods-available/svn-auth.define.conf` and `GroupExternal svn-auth` for the Authz to be called - for **Virtual Hosts**, the `Include` MUST be inside and CANNOT occur during installation of the package, it ***MUST BE MANUAL configuration***
 - `AuthType` and its configuration (for your choice of Authn)
 - `AuthExternalContext` with a `JSON` string for proper substitutions (and, yes, these values are duplicated in your config)
     - `SVNParentPath` - filesystem path to parent directory of repository - this matches the `SVNParentPath` directive
