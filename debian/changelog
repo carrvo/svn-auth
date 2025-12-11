@@ -1,3 +1,11 @@
+svn-auth (2.0.0) unstable; urgency=medium
+
+  * BREAKING CHANGE: anonymous is now `*` #20
+  * important documentation note: Virtual Hosts #22
+  * new feature: user override #7
+
+ -- carrvo <carrvo@gmail.com>  Wed, 10 Dec 2025 19:40:55 -0700
+
 svn-auth (1.2.2) unstable; urgency=medium
 
   * Initial release.
