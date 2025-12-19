@@ -93,15 +93,6 @@ Note: you can use `Require external-group svn-authz <svn property> ParentIfNotEx
 ### Optionally, for redirection
 For ease of redirection from public to secure, `Forbidden*.php` files have been included. They accept a `?new=<>` query parameter to replace the starting `public` path with your secure path. It assumes that you have anonymous under `/public/<>` but this can be changed by modifying the file.
 
-### Optionally, for users to bypass
-If you have a path that is pre-designated for a user, you can add a bypass such that their credentials will succeed regardless of the `<svn property>` value.
-
-An example is given in [user-override.conf](./user-override.conf) and can be used as is with
-```conf
-# MUST come BEFORE other Require directives so that it can approve first and bypass
-Include mods-available/user-override.conf
-```
-
 ## License
 
 Copyright 2024 by carrvo
