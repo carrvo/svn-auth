@@ -1,3 +1,9 @@
+svn-auth (2.0.2) unstable; urgency=medium
+
+  * Fix #30 
+
+ -- carrvo <carrvo@gmail.com>  Thu, 18 Dec 2025 20:17:15 -0700
+
 svn-auth (2.0.1) unstable; urgency=medium
 
   * Fix #7
