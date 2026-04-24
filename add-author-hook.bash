@@ -18,6 +18,8 @@ TXN="$3"
 SVN=/usr/bin/svn
 SVNLOOK=/usr/bin/svnlook
 AUTHOR=$($SVNLOOK author -r "$REV" "$REPOS")
+# Credit to https://remarkablemark.org/blog/2020/10/19/bash-string-newline/
+NL=$'\n'
 
 # Based upon https://stackoverflow.com/a/30010928
 
@@ -39,13 +41,10 @@ function checkauthz() {
     fi
     local file="$2"
     local auth=$($SVN propget "$prop" $file 2>/dev/null || return 1)
-    # Credit to https://stackoverflow.com/a/15394738/7163041
-    #if [[ ! " ${auth[*]} " =~ [[:space:]]${AUTHOR}[[:space:]] ]];
-    if [[ ! " ${auth} " =~ [[:space:]]${AUTHOR}[[:space:]] ]];
+    local check=$($SVN propget "$prop" $file 2>/dev/null | grep "^$AUTHOR$" || return 1)
+    if [ "$check" = "" ];
     then
-        #auth+=($AUTHOR)
-        auth="$auth\r\n$AUTHOR"
-        echo $SVN propset "$prop" "$auth" $file 1>&2
+        auth="$auth$NL$AUTHOR"
         $SVN propset "$prop" "$auth" $file || return 1
     fi
     return 0
@@ -63,9 +62,6 @@ do
     cd $attempt
     for f in $($SVNLOOK changed -r "$REV" "$REPOS" | sed -E "s/^\w+\s+//g" || break);
     do
-        # Credit to https://stackoverflow.com/a/428580/7163041
-        #f=${f#* } # replaced with sed due to for loop already splitting
-        
         checkauthz "$SVNAuthzAdmin" $f || break
         checkauthz "$SVNAuthzWrite" $f || break
         checkauthz "$SVNAuthzRead" $f || break
@@ -73,8 +69,8 @@ do
     break
 done
 
-$SVN commit -m "adding author $AUTHOR to rev $REV" || break
+$SVN commit -m "adding author $AUTHOR to rev $REV" 1>&2 || break
 popd 2>/dev/null
 rm -rf $attempt
-exit 10
+exit 0
 
