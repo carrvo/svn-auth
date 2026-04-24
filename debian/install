@@ -1,3 +1,5 @@
 ForbiddenToRedirect.php /usr/src/svn-auth/
 ForbiddenWithRedirect.php /usr/src/svn-auth/
 svn-auth.php /usr/src/svn-auth/
+author-hook.bash /usr/src/svn-auth/
+add-svnauth-hook /usr/bin/
