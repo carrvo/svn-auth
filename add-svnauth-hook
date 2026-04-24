@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Credit: https://stackoverflow.com/a/246128
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# ensure:
+# 1) has a value
+# 2) ends with slash (/)
+if [[ "$1" == "" || "$1" != */ ]];
+then
+	echo "usage: $0 /path/to/svn-repo/ <read-prop> <write-prop> <admin-prop>"
+	echo "usage: $0 /path/to/svn-repo/ authz:read authz:write authz:admin"
+	exit 1
+fi
+
+pushd "$1" > /dev/null
+cd hooks/
+echo installing post-commit in $PWD
+if [ -f ./post-commit ]; then
+   if [ -d ./post-commit.d/ ]; then
+       ln -s /usr/src/svn-auth/author-hook.bash ./post-commit.d/svn-auth-author
+    else
+       echo "conflict!"
+       exit 2
+    fi
+else
+   ln -s /usr/src/svn-auth/author-hook.bash post-commit
+fi
+
+cd ../conf/
+echo installing post-commit environment variables in $PWD
+echo "" >> $PWD/hooks-env
+echo "[post-commit]" >> $PWD/hooks-env
+echo "SVNAuthzRead = $2" >> $PWD/hooks-env
+echo "SVNAuthzWrite = $3" >> $PWD/hooks-env
+echo "SVNAuthzAdmin = $4" >> $PWD/hooks-env
+if [ ! -f $PWD/hooks-env ];
+then
+    echo "Please manually create hooks-env"
+    echo "echo '' >> $PWD/hooks-env"
+    echo "echo '[post-commit]' >> $PWD/hooks-env"
+    echo "echo 'SVNAuthzRead = $2' >> $PWD/hooks-env"
+    echo "echo 'SVNAuthzWrite = $3' >> $PWD/hooks-env"
+    echo "echo 'SVNAuthzAdmin = $4' >> $PWD/hooks-env"
+fi
+popd > /dev/null
+
