@@ -14,7 +14,13 @@ Vcs-Git: https://github.com/carrvo/svn-auth
 
 Package: svn-auth
 Architecture: all
-Depends: ${misc:Depends}, php, libapache2-mod-authnz-external
+Depends: ${misc:Depends},
+    php (>= 2:8.3),
+    libapache2-mod-authnz-external (>= 3.3.3),
+    bash (>= 5.2.21),
+    subversion (>= 1.14.3),
+    grep (>= 3.11),
+    sed (>= 4.9),
 Suggests: mindie-client
 Homepage: https://github.com/carrvo/svn-auth
 Description: This is a module to use SVN properties for Authorization (Authz) purposes,
