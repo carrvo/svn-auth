@@ -93,6 +93,25 @@ Note: you can use `Require external-group svn-authz <svn property> ParentIfNotEx
 ### Optionally, for redirection
 For ease of redirection from public to secure, `Forbidden*.php` files have been included. They accept a `?new=<>` query parameter to replace the starting `public` path with your secure path. It assumes that you have anonymous under `/public/<>` but this can be changed by modifying the file.
 
+## Ensuring Users Can Access Their Own Commits
+
+At its heart, svn-auth is about allowing the creator of a file to manage authorization over it. However, when it comes to [WebDAV Autoversioning](https://svnbook.red-bean.com/en/1.7/svn.webdav.autoversioning.html) this model breaks down and becomes a "write-once-never-read" scenario; without some kind of additional authorization. This boils down to a chicken-and-egg situation of not being able to set the property for the first time without having permission to do so.
+
+### Adding Author to Commits
+A utility is provided to overcome this scenario. It checks whether the author of the commit has permissions for future commits and, if not, performs a server-side subsequent commit to add them.
+
+To enable simply run:
+```bash
+add-svnauth-hook /path/to/svn-repo/ <read-prop> <write-prop> <admin-prop>
+```
+
+Example:
+```bash
+add-svnauth-hook /path/to/svn-repo/ authz:read authz:write authz:admin
+```
+
+This utility is compatible with [subversion-hooks](https://github.com/carrvo/subversion-hooks).
+
 ## License
 
 Copyright 2024 by carrvo

@@ -1,3 +1,9 @@
+svn-auth (2.1.0) unstable; urgency=medium
+
+  * Resolve #7 by injecting last changed author
+
+ -- carrvo <carrvo@gmail.com>  Fri, 24 Apr 2026 09:55:29 -0600
+
 svn-auth (2.0.2) unstable; urgency=medium
 
   * Fix #30 
