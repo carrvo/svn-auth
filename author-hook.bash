@@ -65,9 +65,9 @@ do
     cd $attempt
     for f in $($SVNLOOK changed -r "$REV" "$REPOS" | sed -E "s/^\w+\s+//g" || break);
     do
-        checkauthz "$SVNAuthzAdmin" $f 1>&2 || break
-        checkauthz "$SVNAuthzWrite" $f 1>&2 || break
-        checkauthz "$SVNAuthzRead" $f 1>&2 || break
+        checkauthz "$SVNAuthzAdmin" $f || break
+        checkauthz "$SVNAuthzWrite" $f || break
+        checkauthz "$SVNAuthzRead" $f || break
     done
     break
 done
