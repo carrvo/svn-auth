@@ -21,6 +21,9 @@ AUTHOR=$($SVNLOOK author -r "$REV" "$REPOS")
 # Credit to https://remarkablemark.org/blog/2020/10/19/bash-string-newline/
 NL=$'\n'
 
+# Credit to https://stackoverflow.com/a/2116854/7163041 for indicating locale missing
+source /etc/default/locale
+
 # Based upon https://stackoverflow.com/a/30010928
 
 if [ ! -d /tmp/ ];
@@ -62,14 +65,14 @@ do
     cd $attempt
     for f in $($SVNLOOK changed -r "$REV" "$REPOS" | sed -E "s/^\w+\s+//g" || break);
     do
-        checkauthz "$SVNAuthzAdmin" $f || break
-        checkauthz "$SVNAuthzWrite" $f || break
-        checkauthz "$SVNAuthzRead" $f || break
+        checkauthz "$SVNAuthzAdmin" $f 1>&2 || break
+        checkauthz "$SVNAuthzWrite" $f 1>&2 || break
+        checkauthz "$SVNAuthzRead" $f 1>&2 || break
     done
     break
 done
 
-$SVN commit -m "adding author $AUTHOR to rev $REV" 1>&2 || break
+$SVN commit -m "adding author $AUTHOR to rev $REV" 1>&2 || return 2
 popd 2>/dev/null
 rm -rf $attempt
 exit 0
