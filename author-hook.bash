@@ -72,7 +72,7 @@ do
     break
 done
 
-$SVN commit -m "adding author $AUTHOR to rev $REV" 1>&2 || break
+$SVN commit -m "adding author $AUTHOR to rev $REV" 1>&2 || return 2
 popd 2>/dev/null
 rm -rf $attempt
 exit 0
