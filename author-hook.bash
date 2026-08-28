@@ -21,6 +21,9 @@ AUTHOR=$($SVNLOOK author -r "$REV" "$REPOS")
 # Credit to https://remarkablemark.org/blog/2020/10/19/bash-string-newline/
 NL=$'\n'
 
+# Credit to https://stackoverflow.com/a/2116854/7163041 for indicating locale missing
+source /etc/default/locale
+
 # Based upon https://stackoverflow.com/a/30010928
 
 if [ ! -d /tmp/ ];
