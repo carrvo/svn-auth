@@ -136,6 +136,10 @@ if ($options['SuperWrite'] && ($orphaned === false) && (count($output) === 1 && 
 }
 
 foreach ($output as $authz) {
+    // Skip blank lines since no user will read as a blank line and inappropriately authenticate
+    if (strcmp('', $authz) === 0) {
+        continue;
+    }
 	// Grant the user their permissions BEFORE checking anonymous
 	// (though this is actually ordered by the property).
 	// When anonymous override, we need to skip specific user checks

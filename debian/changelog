@@ -1,3 +1,9 @@
+svn-auth (2.1.2) unstable; urgency=medium
+
+  * Fix #34 anonymous bug
+
+ -- carrvo <carrvo@gmail.com>  Sat, 29 Aug 2026 11:26:31 -0600
+
 svn-auth (2.1.1) unstable; urgency=medium
 
   * Fix #35 locale issue
